@@ -1,0 +1,25 @@
+:local previous_connections 0;
+
+:while (true) do={
+  :local active_connections [/ppp active print count-only];
+
+  :if ($active_connections != $previous_connections) do={
+    :log info "Perubahan jumlah koneksi PPPoE terdeteksi ($previous_connections -> $active_connections)";
+
+    :if ($active_connections < 360) do={
+      :log info "Jumlah koneksi PPPoE di bawah 340 ($active_connections). Menjalankan script 2 dan 3.";
+      /system script run pesan2;
+      
+
+      :if ($active_connections < 260) do={
+        :log info "Jumlah koneksi PPPoE di bawah 260 ($active_connections). Menjalankan script 4 dan 5.";
+        /system script run pesan3;
+        
+      }
+    } else={
+      :log info "Jumlah koneksi PPPoE di atas 300 ($active_connections). Tidak ada tindakan yang diambil.";
+    }
+
+    :set previous_connections $active_connections;
+  }
+}
